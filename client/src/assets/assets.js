@@ -12,6 +12,7 @@ export const assets = {
     appStore,
     screenImage,
     profile,
+    
    
 }
 
