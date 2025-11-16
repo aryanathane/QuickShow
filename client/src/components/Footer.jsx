@@ -29,13 +29,13 @@ const Footer = () => {
                         <h2 className="font-semibold mb-5">Get in touch</h2>
                         <div className="text-sm space-y-2">
                             <p>+91 100000000</p>
-                            <p>shrish@example.com</p>
+                            <p>aryan@example.com</p>
                         </div>
                     </div>
                 </div>
             </div>
             <p className="pt-4 text-center text-sm pb-5">
-                Copyright {new Date().getFullYear()} © Shrish. All Right Reserved.
+                Copyright {new Date().getFullYear()} © Aryan. All Right Reserved.
             </p>
         </footer>
   )
