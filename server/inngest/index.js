@@ -1,5 +1,8 @@
 import { Inngest } from "inngest";
+import User from "../models/User.js";
+import sendEmail from "../configs/nodeMailer.js";
 
+// Create a client to send and receive events
 export const inngest = new Inngest({ id: "movie-ticket-booking" });
 
 //Inngest funtion to save user data to a database
@@ -76,5 +79,3 @@ const sendBookingConfirmationEmail = inngest.createFunction(
 
 // Create an empty array where we'll export future Inngest functions
 export const functions = [syncUserCreation, syncUserDeletion, syncUserUpdation, sendBookingConfirmationEmail];
-
-
