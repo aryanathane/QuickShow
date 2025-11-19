@@ -110,7 +110,61 @@ const sendBookingConfirmationEmail = inngest.createFunction(
         })
     }
 )
+// Inngest Function to send reminders
+const sendShowReminders = inngest.createFunction(
+    {id: "send-show-reminders"},
+    { cron: "0 */8 * * *" }, // Every 8 hours
+    async ({ step }) => {
+        const now = new Date();
+        const in8Hours = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+        const windowStart = new Date(in8Hours.getTime() - 10 * 60 * 1000);
 
+        // Prepare reminder tasks
+        await step.run('send-reminders', async () => {
+            // Find all bookings with shows in the next 8 hours (with 10 min buffer)
+            const upcomingBookings = await Booking.find({
+                isPaid: true,
+                reminderSent: { $ne: true }
+            }).populate({
+                path: 'show',
+                match: {
+                    showDateTime: {
+                        $gte: windowStart,
+                        $lte: in8Hours
+                    }
+                },
+                populate: { path: 'movie', model: 'Movie' }
+            }).populate('user');
+
+            // Filter out bookings where show is null (didn't match the date criteria)
+            const validBookings = upcomingBookings.filter(booking => booking.show !== null);
+
+            // Send reminder emails
+            for (const booking of validBookings) {
+                await sendEmail({
+                    to: booking.user.email,
+                    subject: `Reminder: "${booking.show.movie.title}" show is coming up soon!`,
+                    body: `<div style="font-family: Arial, Helvetica, sans-serif; line-height: 1.5;">
+                                <h2>Hi ${booking.user.name},</h2>
+                                <p>This is a friendly reminder that your show <strong style="color: #F84565;">"${booking.show.movie.title}"</strong> is coming up soon!</p>
+                                <p>
+                                    <strong>Date:</strong> ${new Date(booking.show.showDateTime).toLocaleDateString('en-us', { timeZone: 'Asia/Kolkata' })} <br/>
+                                    <strong>Time:</strong> ${new Date(booking.show.showDateTime).toLocaleTimeString('en-us', { timeZone: 'Asia/Kolkata' })}
+                                </p>
+                                <p><strong>Seats:</strong> ${booking.bookedSeats.join(', ')}</p>
+                                <p>Don't forget to arrive 15 minutes early!</p>
+                                <p>See you at the show! <br/>--QuickShow Team--</p>
+                            </div>`
+                });
+
+                // Mark reminder as sent
+                await Booking.findByIdAndUpdate(booking._id, { reminderSent: true });
+            }
+
+            return { success: true, remindersSent: validBookings.length };
+        });
+    }
+);
 
 // Create an empty array where we'll export future Inngest functions
-export const functions = [syncUserCreation, syncUserDeletion, syncUserUpdation, releaseSeatsAndDeleteBooking, sendBookingConfirmationEmail];
+export const functions = [syncUserCreation, syncUserDeletion, syncUserUpdation, releaseSeatsAndDeleteBooking, sendBookingConfirmationEmail,sendShowReminders];
