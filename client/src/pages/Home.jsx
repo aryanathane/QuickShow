@@ -1,15 +1,16 @@
 import React from 'react'
 import HeroSection from '../components/HeroSection'
-import FeatureSection from '../components/FeatureSelection'
+import FeatureSelection from '../components/FeatureSelection'
 import TrailerSection from '../components/TrailerSection'
 
 const Home = () => {
   return (
-    <>
+    <div>
+      {/* console.log('Home component rendering'); */}
       <HeroSection/>
-      <FeatureSection/>
+      <FeatureSelection/>
       <TrailerSection/>
-    </>
+    </div>
   )
 }
 

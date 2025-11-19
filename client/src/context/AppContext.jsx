@@ -29,7 +29,7 @@ export const AppProvider = ({children})=>{
 
             if(!data.isAdmin && location.pathname.startsWith('/admin')){
                 navigate('/')
-                toast.error('You are not authoorized')
+                toast.error('You are not authorized')
             }
         } catch (error) {
             console.error(error)

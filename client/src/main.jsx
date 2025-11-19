@@ -14,7 +14,7 @@ if (!PUBLISHABLE_KEY) {
 }
 
 createRoot(document.getElementById('root')).render(
-  <ClerkProvider publishableKey='pk_test_Y2xpbWJpbmctb3Jpb2xlLTU2LmNsZXJrLmFjY291bnRzLmRldiQ'>
+  <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
     <BrowserRouter>
       <AppProvider>
         <App />
