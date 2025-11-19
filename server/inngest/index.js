@@ -1,7 +1,7 @@
 import { Inngest } from "inngest";
 import User from "../models/User.js";
 import sendEmail from "../configs/nodeMailer.js";
-
+import Show from "../models/Show.js";
 // Create a client to send and receive events
 export const inngest = new Inngest({ id: "movie-ticket-booking" });
 
@@ -46,6 +46,40 @@ const syncUserUpdation = inngest.createFunction(
         await User.findByIdAndUpdate(id, userData)
     }
 )
+// Inngest function to cancel booking and release seats of show after 10 minutes of booking created if payment is not made
+const releaseSeatsAndDeleteBooking = inngest.createFunction(
+    {id: 'release-seats-delete-booking'},
+    {event: "app/checkpayment"},
+    async ({ event, step }) => {
+        const tenMinutesLater = new Date(Date.now() + 10 * 60 * 1000);
+        await step.sleepUntil('wait-for-10-minutes', tenMinutesLater);
+
+        await step.run('check-payment-status', async () => {
+            const bookingId = event.data.bookingId;
+            const booking = await Booking.findById(bookingId);
+
+            // If payment is not made, release seats and delete booking
+            if(!booking.isPaid){
+                const show = await Show.findById(booking.show);
+                
+                // Release each booked seat
+                booking.bookedSeats.forEach((seat) => {
+                    delete show.occupiedSeats[seat];
+                });
+                show.markModified('occupiedSeats')
+                // Save the updated show
+                await show.save();
+                
+                // Delete the booking
+                await Booking.findByIdAndDelete(bookingId);
+                
+                return { success: true, message: 'Booking cancelled and seats released' };
+            }
+            
+            return { success: true, message: 'Payment completed, booking retained' };
+        });
+    }
+);
 
 // Inngest function to send email when user books a show
 const sendBookingConfirmationEmail = inngest.createFunction(
@@ -78,4 +112,4 @@ const sendBookingConfirmationEmail = inngest.createFunction(
 
 
 // Create an empty array where we'll export future Inngest functions
-export const functions = [syncUserCreation, syncUserDeletion, syncUserUpdation, sendBookingConfirmationEmail];
+export const functions = [syncUserCreation, syncUserDeletion, syncUserUpdation,releaseSeatsAndDeleteBooking ,sendBookingConfirmationEmail];

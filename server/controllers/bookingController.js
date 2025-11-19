@@ -81,6 +81,12 @@ export const createBooking = async (req,res)=>{
         booking.paymentLink = session.url
         await booking.save()
 
+        await inngest.send({
+            name:"app/checkpayment",
+            data:{
+                bookingId:booking._id.toString()
+            }
+        })
         res.json({success: true , url:session.url, bookingId: booking._id})
     } catch (error) {
         console.log(error.message);
