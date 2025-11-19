@@ -48,7 +48,7 @@ const AddShows = () => {
     })
   }
 
-  const handleRemoveTime = ()=>{
+  const handleRemoveTime = (date, time)=>{
     setDateTimeSelection((prev)=>{
       const filteredTimes = prev[date].filter((t)=> t !== time);
       if(filteredTimes.length === 0){
@@ -103,7 +103,7 @@ const AddShows = () => {
 
 
 
-  return setNowPlayingMovies.length > 0 ? (
+  return nowPlayingMovies.length > 0 ? (
     <>
       <Title text1="Add" text2="Shows"></Title>
       <p className='mt-10 text-lg font-medium'>Now Playing Movies</p>
@@ -139,7 +139,7 @@ const AddShows = () => {
       <div className='mt-8' >
           <label className='block text-sm font-medium mb-2'>Show price </label>
           <div className='inline-flex items-center gap-2 border border-gray-600 px-3 py-2'>
-            <p className='text-gray-400 text-sm'>₹</p>
+            <p className='text-gray-400 text-sm'>{currency}</p>
             <input min={0} type='number' value={showPrice} onChange={(e)=>setShowPrice(e.target.value)} placeholder='Enter show price' className='outline-none' />
           </div>
       </div>
