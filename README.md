@@ -1,716 +1,547 @@
-# QuickShow
+# 🎬 QuickShow - Movie Ticket Booking Application
 
-A comprehensive movie/show ticket booking platform with real-time seat management, secure payment processing, and an admin dashboard for complete show management.
+A full-stack movie ticket booking platform that allows users to browse movies, select seats, and book tickets with secure payment processing. Features real-time seat management, automated email notifications, and a comprehensive admin dashboard.
 
-🔗 **Live Demo**: 
-- **User Platform**: [https://quickshow-one-pearl.vercel.app/](https://quickshow-one-pearl.vercel.app/)
-- **Admin Dashboard**: [https://quickshow-one-pearl.vercel.app/admin](https://quickshow-one-pearl.vercel.app/admin)
+🔗 **Live Demo**: [https://quickshow-one-pearl.vercel.app/](https://quickshow-one-pearl.vercel.app/)
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
+- [Architecture](#architecture)
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [API Documentation](#api-documentation)
+- [Environment Variables](#environment-variables)
+- [Running the Application](#running-the-application)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
+- [Features in Detail](#features-in-detail)
 - [Deployment](#deployment)
-- [Additional Setup](#additional-setup)
+- [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
-- [License](#license)
-
-## 🎯 Overview
-
-QuickShow is a full-stack ticket booking platform that enables users to browse shows, select seats, and complete secure payments through Stripe. The application features real-time seat availability management to prevent double bookings, automated email confirmations via Nodemailer, and a comprehensive admin dashboard for managing shows, viewing bookings, and monitoring revenue.
 
 ## ✨ Features
 
 ### User Features
-- 🎬 Browse available shows and events
-- 🪑 Interactive seat selection interface
-- 🔒 Real-time seat locking to prevent double bookings
+- 🎥 Browse movies with detailed information from TMDB
+- 🔍 Search and filter movies by genre, rating, and release date
+- 🪑 Real-time seat selection with visual seat map
+- ⏱️ Seat hold timer to prevent double booking
 - 💳 Secure payment processing with Stripe
-- 📧 Instant booking confirmation emails
-- 🎫 Digital ticket generation
-- 📱 Mobile-responsive booking experience
-- 👤 User authentication and profile management
-- 📜 Booking history and order tracking
-- ❌ Booking cancellation (if enabled)
+- 📧 Automated email confirmations after booking
+- 👤 User authentication and profile management with Clerk
+- 📱 Responsive design for mobile and desktop
+- 🎫 View booking history and ticket details
 
 ### Admin Features
 - 📊 Comprehensive admin dashboard
-- 🎭 Add, edit, and delete shows/events
-- 🎫 View all bookings in real-time
-- 💰 Revenue tracking and analytics
-- 🪑 Seat management and availability monitoring
+- 🎬 Movie management (add, edit, delete)
+- 🏢 Theater and showtime management
+- 📈 Booking analytics and reports
 - 👥 User management
-- 📈 Booking statistics and reports
-- 🕐 Show scheduling and timing management
-- 🎨 Show details (venue, price, timing, capacity)
-- 🔍 Search and filter bookings
+- 💰 Revenue tracking
+- 🎯 Seat configuration for different halls
 
 ### Technical Features
-- 🚫 Double booking prevention system
-- ⚡ Real-time seat availability updates
-- 🔐 Secure authentication and authorization
+- ⚡ Fast performance with modern build tools
+- 🔐 Secure authentication with Clerk
+- 📅 Event scheduling and automation with Inngest
+- 🎨 Beautiful UI with modern design principles
+- 🔄 Real-time updates
+- 📧 Email notifications via SMTP
 - 🌐 RESTful API architecture
-- 🛡️ Error handling and validation
-- 🌍 Cross-browser compatibility
-- 📬 Automated email notifications
-- 💾 Persistent data storage
 
-## 🛠️ Tech Stack
+## 🛠 Tech Stack
 
-### Frontend (Client)
-- **JavaScript** - Programming language
-- **HTML5** - Markup
-- **CSS3** - Styling
-- **Modern ES6+** - Latest JavaScript features
-- **Responsive Design** - Mobile-first approach
+**Frontend:**
+- React.js / Vite
+- JavaScript/TypeScript
+- Tailwind CSS
+- Framer Motion (animations)
+- React Router
 
-### Backend (Server)
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **MongoDB** - Database for storing shows, bookings, and users
-- **Mongoose** - MongoDB ODM
-- **Stripe API** - Payment processing
-- **Nodemailer** - Email service
-- **JWT** - Authentication tokens
-- **RESTful API** - API architecture
-- **JavaScript** - Server-side logic
+**Backend:**
+- Node.js
+- Express.js
+- MongoDB (Database)
+- Mongoose (ODM)
 
-### Admin Dashboard
-- **JavaScript** - Programming language
-- **HTML/CSS** - Interface design
-- **Admin UI Framework** - Dashboard interface
+**Authentication & Authorization:**
+- Clerk (User authentication)
+- JWT tokens
 
-### Deployment
-- **Vercel** - Cloud hosting platform
-- **MongoDB Atlas** - Cloud database
-- **Git** - Version control
+**Third-Party Services:**
+- **TMDB API** - Movie data and information
+- **Stripe** - Payment processing
+- **Inngest** - Event scheduling and automation
+- **Nodemailer** - Email notifications
+
+**DevOps:**
+- Vite (Build tool)
+- Git & GitHub
+
+## 🏗 Architecture
+
+```
+┌─────────────────┐
+│   React Client  │
+│   (Frontend)    │
+└────────┬────────┘
+         │
+         ↓
+┌─────────────────┐
+│   Express API   │
+│   (Backend)     │
+└────────┬────────┘
+         │
+         ├──→ MongoDB (Database)
+         ├──→ Clerk (Authentication)
+         ├──→ TMDB API (Movie Data)
+         ├──→ Stripe (Payments)
+         ├──→ Inngest (Events)
+         └──→ SMTP (Emails)
+```
+
+## 📦 Prerequisites
+
+Ensure you have the following installed:
+- **Node.js** (v16 or higher)
+- **npm** or **yarn**
+- **MongoDB** (local installation or MongoDB Atlas account)
+- **Git**
+
+You'll also need accounts for:
+- [Clerk](https://clerk.dev) - Authentication
+- [TMDB](https://www.themoviedb.org/settings/api) - Movie data
+- [Stripe](https://stripe.com) - Payment processing
+- [Inngest](https://www.inngest.com) - Event scheduling
+- SMTP service (Gmail, SendGrid, etc.)
+
+## 🚀 Installation
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/aryanathane/QuickShow.git
+cd QuickShow
+```
+
+### 2. Install Backend Dependencies
+```bash
+cd backend
+npm install
+```
+
+### 3. Install Frontend Dependencies
+```bash
+cd ../client
+npm install
+```
+
+## 🔐 Environment Variables
+
+### Backend Environment Variables
+
+Create a `.env` file in the **backend** directory:
+
+```env
+# ========================
+# DATABASE CONFIGURATION
+# ========================
+MONGODB_URI=mongodb://localhost:27017/quickshow
+# For MongoDB Atlas:
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/quickshow?retryWrites=true&w=majority
+
+# ========================
+# CLERK AUTHENTICATION
+# ========================
+CLERK_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxx
+CLERK_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# ========================
+# INNGEST EVENT SCHEDULING
+# ========================
+INNGEST_EVENT_KEY=your_inngest_event_key_here
+INNGEST_SIGNING_KEY=your_inngest_signing_key_here
+
+# ========================
+# TMDB API (Movie Data)
+# ========================
+TMDB_API_KEY=your_tmdb_api_key_here
+
+# ========================
+# STRIPE PAYMENT PROCESSING
+# ========================
+STRIPE_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxx
+STRIPE_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxxxxxxxx
+STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# ========================
+# EMAIL CONFIGURATION (SMTP)
+# ========================
+SENDER_EMAIL=noreply@quickshow.com
+SMTP_USER=your_smtp_username
+SMTP_PASS=your_smtp_password
+
+# Optional: For Gmail
+# SMTP_HOST=smtp.gmail.com
+# SMTP_PORT=587
+```
+
+### Frontend Environment Variables
+
+Create a `.env` file in the **client** directory:
+
+```env
+# ========================
+# CLERK AUTHENTICATION (Frontend)
+# ========================
+VITE_CLERK_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# ========================
+# API CONFIGURATION
+# ========================
+VITE_BASE_URL=http://localhost:5000
+VITE_API_URL=http://localhost:5000/api
+
+# ========================
+# TMDB IMAGE BASE URL
+# ========================
+VITE_TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p/original
+
+# ========================
+# STRIPE (Frontend)
+# ========================
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# ========================
+# OTHER CONFIGURATIONS
+# ========================
+VITE_CURRENCY=$
+```
+
+## 🔑 How to Get API Keys
+
+### 1. Clerk Authentication
+1. Sign up at [clerk.dev](https://clerk.dev)
+2. Create a new application
+3. Go to **API Keys** section
+4. Copy both **Publishable Key** and **Secret Key**
+
+### 2. TMDB API
+1. Create account at [themoviedb.org](https://www.themoviedb.org)
+2. Go to **Settings** → **API**
+3. Request an API key
+4. Copy your **API Key (v3 auth)**
+
+### 3. Stripe
+1. Sign up at [stripe.com](https://stripe.com)
+2. Go to **Developers** → **API Keys**
+3. Copy **Publishable Key** and **Secret Key** (use test keys for development)
+4. For webhooks: **Developers** → **Webhooks** → Add endpoint
+5. Copy **Webhook Secret**
+
+### 4. Inngest
+1. Sign up at [inngest.com](https://www.inngest.com)
+2. Create a new project
+3. Go to **Settings** → **Keys**
+4. Copy **Event Key** and **Signing Key**
+
+### 5. SMTP Configuration (Gmail Example)
+1. Go to Google Account settings
+2. Enable **2-Step Verification**
+3. Generate an **App Password**
+4. Use your Gmail and App Password as SMTP credentials
+
+**Settings for Gmail:**
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your.email@gmail.com
+SMTP_PASS=your_app_password
+```
+
+## 🏃 Running the Application
+
+### Development Mode
+
+**Start Backend Server:**
+```bash
+cd backend
+npm run dev
+```
+Backend runs on `http://localhost:5000`
+
+**Start Frontend Development Server:**
+```bash
+cd client
+npm run dev
+```
+Frontend runs on `http://localhost:5173` (Vite default)
+
+### Production Build
+
+**Build Frontend:**
+```bash
+cd client
+npm run build
+```
+
+**Start Backend in Production:**
+```bash
+cd backend
+npm start
+```
 
 ## 📁 Project Structure
+
 ```
 QuickShow/
-├── client/                      # User-facing frontend
-│   ├── public/                 # Static assets
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── ShowList.js    # Display available shows
-│   │   │   ├── SeatSelection.js # Interactive seat picker
-│   │   │   ├── Checkout.js    # Payment interface
-│   │   │   └── BookingConfirmation.js
-│   │   ├── pages/
-│   │   │   ├── Home.js
-│   │   │   ├── ShowDetails.js
-│   │   │   ├── MyBookings.js
-│   │   │   └── Profile.js
-│   │   ├── services/
-│   │   │   ├── api.js         # API client
-│   │   │   ├── stripe.js      # Stripe integration
-│   │   │   └── auth.js        # Authentication
-│   │   └── utils/
-│   │       ├── seatUtils.js   # Seat management utilities
-│   │       └── dateUtils.js
-│   └── package.json
-│
-├── admin/                       # Admin dashboard
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Dashboard.js   # Main admin dashboard
-│   │   │   ├── ShowManagement.js # Add/Edit/Delete shows
-│   │   │   ├── BookingsList.js   # View all bookings
-│   │   │   └── Analytics.js      # Revenue and statistics
-│   │   ├── pages/
-│   │   │   ├── AdminLogin.js
-│   │   │   ├── Shows.js
-│   │   │   ├── Bookings.js
-│   │   │   └── Reports.js
-│   │   └── services/
-│   │       └── adminApi.js
-│   └── package.json
-│
-├── server/                      # Backend application
-│   ├── controllers/
-│   │   ├── showController.js       # Show CRUD operations
-│   │   ├── bookingController.js    # Booking management
-│   │   ├── paymentController.js    # Stripe integration
-│   │   ├── emailController.js      # Email notifications
-│   │   └── authController.js       # Authentication
-│   ├── models/
-│   │   ├── Show.js            # Show schema
-│   │   ├── Booking.js         # Booking schema with seat info
-│   │   ├── User.js            # User schema
-│   │   └── Seat.js            # Seat availability schema
-│   ├── routes/
-│   │   ├── shows.js
-│   │   ├── bookings.js
-│   │   ├── payments.js
-│   │   ├── emails.js
-│   │   └── admin.js
-│   ├── middleware/
-│   │   ├── auth.js            # JWT verification
-│   │   ├── adminAuth.js       # Admin authentication
-│   │   ├── seatLock.js        # Prevent double booking
-│   │   └── errorHandler.js
+├── backend/
 │   ├── config/
-│   │   ├── database.js
-│   │   ├── stripe.js
-│   │   └── nodemailer.js
+│   │   ├── database.js          # MongoDB configuration
+│   │   ├── clerk.js              # Clerk setup
+│   │   └── stripe.js             # Stripe configuration
+│   ├── controllers/
+│   │   ├── authController.js     # Authentication logic
+│   │   ├── movieController.js    # Movie operations
+│   │   ├── bookingController.js  # Booking management
+│   │   └── paymentController.js  # Payment processing
+│   ├── models/
+│   │   ├── User.js               # User schema
+│   │   ├── Movie.js              # Movie schema
+│   │   ├── Booking.js            # Booking schema
+│   │   └── Theater.js            # Theater schema
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── movieRoutes.js
+│   │   ├── bookingRoutes.js
+│   │   └── paymentRoutes.js
+│   ├── middleware/
+│   │   ├── auth.js               # Authentication middleware
+│   │   └── errorHandler.js       # Error handling
+│   ├── services/
+│   │   ├── tmdbService.js        # TMDB API integration
+│   │   ├── emailService.js       # Email notifications
+│   │   └── inngestService.js     # Event scheduling
 │   ├── utils/
-│   │   ├── seatManager.js     # Seat locking logic
-│   │   ├── emailTemplates.js  # Email HTML templates
 │   │   └── helpers.js
-│   ├── templates/             # Email templates
-│   │   ├── bookingConfirmation.html
-│   │   ├── welcomeEmail.html
-│   │   └── ticketEmail.html
-│   ├── index.js
+│   ├── .env
+│   ├── server.js
 │   └── package.json
-│
+├── client/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── common/          # Reusable components
+│   │   │   ├── movies/          # Movie-related components
+│   │   │   ├── booking/         # Booking components
+│   │   │   └── admin/           # Admin panel components
+│   │   ├── pages/
+│   │   │   ├── Home.jsx
+│   │   │   ├── MovieDetails.jsx
+│   │   │   ├── Booking.jsx
+│   │   │   ├── Payment.jsx
+│   │   │   ├── Profile.jsx
+│   │   │   └── Admin/
+│   │   ├── services/
+│   │   │   └── api.js           # API calls
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx  # Authentication context
+│   │   ├── hooks/               # Custom React hooks
+│   │   ├── utils/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── .env
+│   ├── vite.config.js
+│   └── package.json
 ├── .gitignore
 └── README.md
 ```
 
-## 🚀 Getting Started
+## 📡 API Endpoints
 
-### Prerequisites
+### Authentication
+```
+POST   /api/auth/register          # Register new user
+POST   /api/auth/login             # User login
+GET    /api/auth/profile           # Get user profile
+PUT    /api/auth/profile           # Update profile
+```
 
-- Node.js (v14 or higher)
-- npm or yarn
-- MongoDB (local or Atlas account)
-- Git
-- Stripe Account (for payment processing)
-- Email service provider (Gmail/SendGrid/Mailgun)
+### Movies
+```
+GET    /api/movies                 # Get all movies
+GET    /api/movies/:id             # Get movie by ID
+GET    /api/movies/search          # Search movies
+GET    /api/movies/trending        # Get trending movies
+POST   /api/movies                 # Add movie (Admin)
+PUT    /api/movies/:id             # Update movie (Admin)
+DELETE /api/movies/:id             # Delete movie (Admin)
+```
 
-### Installation
+### Bookings
+```
+POST   /api/bookings               # Create new booking
+GET    /api/bookings               # Get user bookings
+GET    /api/bookings/:id           # Get booking details
+PUT    /api/bookings/:id/cancel    # Cancel booking
+GET    /api/bookings/seats/:showId # Get available seats
+POST   /api/bookings/hold-seats    # Hold seats temporarily
+```
 
-1. **Clone the repository**
+### Payments
+```
+POST   /api/payments/create-intent # Create payment intent
+POST   /api/payments/confirm       # Confirm payment
+POST   /api/payments/webhook       # Stripe webhook
+GET    /api/payments/:id           # Get payment details
+```
+
+### Admin
+```
+GET    /api/admin/dashboard        # Dashboard stats
+GET    /api/admin/bookings         # All bookings
+GET    /api/admin/users            # User management
+POST   /api/admin/theaters         # Add theater
+PUT    /api/admin/theaters/:id     # Update theater
+```
+
+## 🎯 Features in Detail
+
+### Real-time Seat Selection
+- Visual seat map with different seat categories
+- Color-coded seat status (available, booked, selected)
+- Automatic seat hold for 10 minutes
+- Real-time updates when other users book
+
+### Payment Flow
+1. User selects movie and showtime
+2. Chooses seats from interactive seat map
+3. Seats are held for 10 minutes
+4. Proceeds to payment (Stripe Checkout)
+5. Payment confirmation
+6. Email confirmation sent via Inngest
+7. Ticket generated with QR code
+
+### Email Notifications
+- Booking confirmation with ticket details
+- Payment receipt
+- Booking cancellation confirmation
+- Reminder emails before show time
+
+### Admin Dashboard
+- Real-time booking statistics
+- Revenue analytics with charts
+- Movie management interface
+- Theater and screen configuration
+- User activity monitoring
+
+## 🌐 Deployment
+
+### Backend Deployment (Railway/Render)
+
+**Railway:**
 ```bash
-   git clone https://github.com/aryanathane/QuickShow.git
-   cd QuickShow
+railway login
+railway init
+railway add
+railway up
 ```
 
-2. **Install Server Dependencies**
+**Render:**
+1. Connect GitHub repository
+2. Add environment variables
+3. Deploy
+
+### Frontend Deployment (Vercel/Netlify)
+
+**Vercel:**
 ```bash
-   cd server
-   npm install
+npm install -g vercel
+vercel
 ```
 
-3. **Install Client Dependencies**
+**Netlify:**
 ```bash
-   cd ../client
-   npm install
+npm run build
+netlify deploy --prod --dir=dist
 ```
-
-4. **Install Admin Dependencies**
-```bash
-   cd ../admin
-   npm install
-```
-
-## ⚙️ Configuration
-
-### Server Configuration
-
-Create a `.env` file in the `server` directory:
-```env
-PORT=5000
-NODE_ENV=development
-
-# MongoDB Configuration
-MONGODB_URI=mongodb://localhost:27017/quickshow
-# Or for MongoDB Atlas
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/quickshow
-
-# JWT Configuration
-JWT_SECRET=your_super_secret_jwt_key
-JWT_EXPIRES_IN=7d
-ADMIN_JWT_SECRET=your_admin_jwt_secret
-
-# Stripe Configuration
-STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
-STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
-STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
-
-# Nodemailer Configuration
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=your_email@gmail.com
-SMTP_PASSWORD=your_app_specific_password
-FROM_EMAIL=noreply@quickshow.com
-FROM_NAME=QuickShow
-
-# Seat Lock Configuration
-SEAT_LOCK_DURATION=300000  # 5 minutes in milliseconds
-
-# CORS Configuration
-CLIENT_URL=http://localhost:3000
-ADMIN_URL=http://localhost:3001
-```
-
-### Client Configuration
-
-Create a `.env` file in the `client` directory:
-```env
-REACT_APP_API_URL=http://localhost:5000/api
-REACT_APP_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
-```
-
-### Admin Configuration
-
-Create a `.env` file in the `admin` directory:
-```env
-REACT_APP_API_URL=http://localhost:5000/api
-REACT_APP_ADMIN_API_URL=http://localhost:5000/api/admin
-```
-
-## 💻 Usage
-
-### Development Mode
-
-1. **Start MongoDB** (if running locally)
-```bash
-   mongod
-```
-
-2. **Start the Server**
-```bash
-   cd server
-   npm start
-   # or for development with auto-reload
-   npm run dev
-```
-
-3. **Start the Client**
-```bash
-   cd client
-   npm start
-```
-
-4. **Start the Admin Dashboard**
-```bash
-   cd admin
-   npm start
-```
-
-The applications will be available at:
-- **Server API**: `http://localhost:5000`
-- **Client**: `http://localhost:3000`
-- **Admin Dashboard**: `http://localhost:3001`
-
-## 📡 API Documentation
-
-### Base URL
-```
-http://localhost:5000/api
-```
-
-### Authentication Endpoints
-```http
-POST /api/auth/register              # Register new user
-POST /api/auth/login                 # User login
-GET  /api/auth/profile               # Get user profile
-PUT  /api/auth/profile               # Update profile
-POST /api/auth/logout                # Logout user
-POST /api/auth/forgot-password       # Request password reset
-POST /api/auth/reset-password        # Reset password
-```
-
-### Show Endpoints
-```http
-GET    /api/shows                    # Get all shows
-GET    /api/shows/:id                # Get single show details
-GET    /api/shows/:id/availability   # Get seat availability
-POST   /api/shows                    # Create show (Admin only)
-PUT    /api/shows/:id                # Update show (Admin only)
-DELETE /api/shows/:id                # Delete show (Admin only)
-GET    /api/shows/search             # Search shows
-```
-
-### Booking Endpoints
-```http
-POST   /api/bookings/check-seats     # Check if seats are available
-POST   /api/bookings/lock-seats      # Temporarily lock seats (5 min)
-POST   /api/bookings/create          # Create booking after payment
-GET    /api/bookings                 # Get user's bookings
-GET    /api/bookings/:id             # Get booking details
-DELETE /api/bookings/:id             # Cancel booking
-GET    /api/bookings/:id/ticket      # Get digital ticket
-```
-
-### Payment Endpoints (Stripe)
-```http
-POST /api/payment/create-checkout-session    # Create Stripe checkout
-POST /api/payment/webhook                    # Stripe webhook handler
-GET  /api/payment/success                    # Payment success callback
-GET  /api/payment/cancel                     # Payment cancel callback
-POST /api/payment/verify                     # Verify payment status
-```
-
-### Email Endpoints
-```http
-POST /api/email/booking-confirmation    # Send booking confirmation
-POST /api/email/ticket                  # Send ticket email
-POST /api/email/cancellation            # Send cancellation email
-POST /api/email/reminder                # Send show reminder
-```
-
-### Admin Endpoints
-```http
-POST   /api/admin/login                      # Admin login
-GET    /api/admin/dashboard                  # Dashboard statistics
-GET    /api/admin/bookings                   # Get all bookings
-GET    /api/admin/bookings/:id               # Get booking details
-PUT    /api/admin/bookings/:id/status        # Update booking status
-GET    /api/admin/shows                      # Get all shows
-POST   /api/admin/shows                      # Create new show
-PUT    /api/admin/shows/:id                  # Update show
-DELETE /api/admin/shows/:id                  # Delete show
-GET    /api/admin/revenue                    # Get revenue statistics
-GET    /api/admin/users                      # Get all users
-```
-
-### Request Examples
-
-**Create a Show (Admin)**
-```json
-POST /api/admin/shows
-{
-  "title": "Avengers: Endgame",
-  "description": "The epic conclusion to the Infinity Saga",
-  "genre": "Action/Sci-Fi",
-  "duration": 180,
-  "language": "English",
-  "venue": "PVR Cinemas, Phoenix Mall",
-  "showTime": "2024-01-15T19:00:00Z",
-  "price": 350,
-  "totalSeats": 100,
-  "seatLayout": {
-    "rows": 10,
-    "seatsPerRow": 10
-  },
-  "image": "https://example.com/poster.jpg"
-}
-```
-
-**Book Tickets**
-```json
-POST /api/bookings/create
-{
-  "showId": "65abc123def456",
-  "seats": ["A1", "A2", "A3"],
-  "userId": "65xyz789abc123",
-  "totalAmount": 1050,
-  "paymentIntentId": "pi_stripe_payment_id",
-  "email": "user@example.com",
-  "phone": "+919876543210"
-}
-```
-
-**Check Seat Availability**
-```json
-POST /api/bookings/check-seats
-{
-  "showId": "65abc123def456",
-  "seats": ["A1", "A2"]
-}
-
-Response:
-{
-  "available": true,
-  "seats": [
-    { "seatNumber": "A1", "status": "available" },
-    { "seatNumber": "A2", "status": "available" }
-  ]
-}
-```
-
-## 🚀 Deployment
-
-### Deploy to Vercel
-
-1. **Install Vercel CLI**
-```bash
-   npm install -g vercel
-```
-
-2. **Deploy Server**
-```bash
-   cd server
-   vercel --prod
-```
-
-3. **Deploy Client**
-```bash
-   cd client
-   vercel --prod
-```
-
-4. **Deploy Admin Dashboard**
-```bash
-   cd admin
-   vercel --prod
-```
-
-### Environment Variables on Vercel
-
-**Server Configuration:**
-- `NODE_ENV=production`
-- `MONGODB_URI` - MongoDB Atlas connection string
-- `JWT_SECRET`
-- `ADMIN_JWT_SECRET`
-- `STRIPE_SECRET_KEY`
-- `STRIPE_WEBHOOK_SECRET`
-- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`
-- `FROM_EMAIL`, `FROM_NAME`
-- `CLIENT_URL` - Deployed client URL
-- `ADMIN_URL` - Deployed admin URL
-- `SEAT_LOCK_DURATION`
-
-**Client Configuration:**
-- `REACT_APP_API_URL` - Deployed server URL
-- `REACT_APP_STRIPE_PUBLISHABLE_KEY`
-
-**Admin Configuration:**
-- `REACT_APP_API_URL` - Deployed server URL
-- `REACT_APP_ADMIN_API_URL` - Deployed admin API URL
 
 ### MongoDB Atlas Setup
+1. Create cluster at [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
+2. Add database user
+3. Whitelist IP addresses (or allow all)
+4. Get connection string
+5. Update `MONGODB_URI` in backend `.env`
 
-1. Create a MongoDB Atlas account
-2. Create a new cluster
-3. Add database user
-4. Whitelist your IP (or 0.0.0.0/0 for Vercel)
-5. Get connection string and add to `MONGODB_URI`
+## 🐛 Troubleshooting
 
-## 🔧 Additional Setup
+### Common Issues
 
-### Double Booking Prevention System
-
-The application implements a sophisticated seat locking mechanism:
-
-1. **Temporary Lock**: When a user selects seats, they are locked for 5 minutes
-2. **Payment Timeout**: If payment isn't completed in 5 minutes, seats are released
-3. **Real-time Updates**: Other users see seats as "temporarily unavailable"
-4. **Database Transactions**: Uses MongoDB transactions for atomicity
-5. **Race Condition Handling**: Prevents simultaneous bookings of same seats
-
-**Implementation Flow:**
-```
-User selects seats → Seats locked (5 min) → Payment page → 
-Payment successful → Permanent booking → Email confirmation
-                   ↓
-Payment failed/timeout → Seats released → Available again
+**Port Already in Use:**
+```bash
+# Kill process on port 5000
+npx kill-port 5000
 ```
 
-### Stripe Setup
+**MongoDB Connection Error:**
+- Check if MongoDB is running: `mongod --version`
+- Verify connection string in `.env`
+- Check network access in MongoDB Atlas
 
-1. **Create Stripe Account**
-   - Sign up at [stripe.com](https://stripe.com)
-   - Get API keys from Dashboard > Developers > API keys
+**Clerk Authentication Issues:**
+- Verify API keys are correct
+- Check if domain is added in Clerk dashboard
+- Ensure environment variables are loaded
 
-2. **Configure Webhooks**
-   - Go to Developers > Webhooks
-   - Add endpoint: `https://your-server-url.vercel.app/api/payment/webhook`
-   - Select events:
-     - `checkout.session.completed`
-     - `payment_intent.succeeded`
-     - `payment_intent.payment_failed`
-   - Copy webhook signing secret
-
-3. **Test Cards**
-   - Success: `4242 4242 4242 4242`
-   - Decline: `4000 0000 0000 0002`
-   - Authentication: `4000 0025 0000 3155`
-
-### Nodemailer Setup
-
-1. **Gmail Configuration**
-   - Enable 2-Step Verification
-   - Generate App Password:
-     - Google Account > Security > 2-Step Verification > App passwords
-     - Select "Mail" and "Other (Custom name)"
-     - Copy password to `SMTP_PASSWORD`
-
-2. **Email Templates**
-   Located in `server/templates/`:
-   - `bookingConfirmation.html` - Sent after successful booking
-   - `ticketEmail.html` - Digital ticket with QR code
-   - `cancellationEmail.html` - Booking cancellation notice
-
-3. **Email Features**
-   - Booking confirmation with ticket details
-   - QR code for ticket verification
-   - Show details (venue, time, seats)
-   - Payment receipt
-
-### Admin Dashboard Features
-
-**Dashboard Overview:**
-- Total revenue
-- Number of bookings today/this week/this month
-- Total shows
-- Seat occupancy rate
-- Recent bookings list
-- Revenue chart
-
-**Show Management:**
-- Add new shows with full details
-- Edit show information
-- Delete shows (with confirmation)
-- View seat layout and availability
-- Manage show timing
-
-**Booking Management:**
-- View all bookings (past and upcoming)
-- Filter by date, show, status
-- Search by user email/phone
-- View booking details
-- Cancel bookings (with refund option)
-- Export booking data
-
-## 🧪 Testing
-
-### Test Seat Locking Feature
-
-1. Open two browser windows
-2. Window 1: Select seats and proceed to payment
-3. Window 2: Try to select the same seats
-4. Result: Seats should show as "temporarily unavailable"
-5. Wait 5 minutes or complete payment in Window 1
-6. Refresh Window 2 to see updated availability
-
-### Test Stripe Integration
+**Stripe Webhook Not Working:**
 ```bash
 # Install Stripe CLI
-stripe listen --forward-to localhost:5000/api/payment/webhook
-
-# Trigger test webhook
-stripe trigger checkout.session.completed
+stripe listen --forward-to localhost:5000/api/payments/webhook
 ```
 
-## 📝 Database Schema
-
-### Show Schema
-```javascript
-{
-  title: String,
-  description: String,
-  genre: String,
-  duration: Number,
-  language: String,
-  venue: String,
-  showTime: Date,
-  price: Number,
-  totalSeats: Number,
-  availableSeats: Number,
-  seatLayout: Object,
-  bookedSeats: [String],
-  lockedSeats: [{
-    seatNumber: String,
-    lockedUntil: Date,
-    userId: ObjectId
-  }],
-  image: String,
-  createdAt: Date
-}
-```
-
-### Booking Schema
-```javascript
-{
-  userId: ObjectId,
-  showId: ObjectId,
-  seats: [String],
-  totalAmount: Number,
-  paymentStatus: String,
-  paymentIntentId: String,
-  bookingDate: Date,
-  showDate: Date,
-  email: String,
-  phone: String,
-  status: String, // confirmed, cancelled
-  qrCode: String
-}
-```
+**TMDB API Rate Limiting:**
+- TMDB allows 40 requests every 10 seconds
+- Implement caching for frequently accessed data
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
+Contributions are welcome! Please follow these guidelines:
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create a feature branch: `git checkout -b feature/AmazingFeature`
+3. Commit changes: `git commit -m 'Add AmazingFeature'`
+4. Push to branch: `git push origin feature/AmazingFeature`
 5. Open a Pull Request
 
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
+### Coding Standards
+- Use ESLint and Prettier for code formatting
+- Write meaningful commit messages
+- Add comments for complex logic
+- Update documentation for new features
 
 ## 👤 Author
 
 **Aryan Athane**
 - GitHub: [@aryanathane](https://github.com/aryanathane)
-- Repository: [QuickShow](https://github.com/aryanathane/QuickShow)
 
 ## 🙏 Acknowledgments
 
-- Stripe for secure payment processing
-- Nodemailer for reliable email delivery
-- MongoDB for flexible data storage
-- Vercel for seamless deployment
-- All contributors and users
+- [TMDB](https://www.themoviedb.org) for movie data
+- [Clerk](https://clerk.dev) for authentication
+- [Stripe](https://stripe.com) for payment processing
+- [Inngest](https://www.inngest.com) for event scheduling
+- All contributors and supporters
 
 ## 📞 Support
 
-For support and questions:
-- Open an issue in the [GitHub repository](https://github.com/aryanathane/QuickShow/issues)
-- Email: [your-email@example.com]
+For issues or questions:
+- Open an issue on GitHub
+- Email: aryanathane@gmail.com
+- Join our Discord community
 
 ---
 
-⭐ If you find this project useful, please give it a star!
+⭐ **If you find this project useful, please give it a star!**
 
-## 🗺️ Roadmap
-
-- [ ] QR code ticket verification system
-- [ ] Mobile app for iOS and Android
-- [ ] Multiple payment gateway support
-- [ ] Show recommendations based on user history
-- [ ] Social media integration
-- [ ] Review and rating system
-- [ ] Loyalty points program
-- [ ] Advanced analytics dashboard
-- [ ] Multi-language support
-- [ ] Dark mode
-
-## 💡 Key Features Explained
-
-### Real-Time Seat Management
-- Seats are locked when selected by any user
-- Lock expires after 5 minutes if payment not completed
-- Visual indicators show available/booked/locked seats
-- Prevents race conditions using database transactions
-
-### Payment Flow
-1. User selects seats (locked for 5 min)
-2. Stripe checkout session created
-3. User completes payment
-4. Webhook confirms payment
-5. Booking created in database
-6. Confirmation email sent
-7. Digital ticket generated
-
-### Admin Capabilities
-- Full CRUD operations on shows
-- Real-time booking monitoring
-- Revenue analytics and reporting
-- User management
-- Seat availability tracking
-- Bulk operations support
+🎬 **Happy Movie Booking!**
