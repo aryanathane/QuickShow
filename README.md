@@ -3,6 +3,9 @@
 A full-stack movie ticket booking platform that allows users to browse movies, select seats, and book tickets with secure payment processing. Features real-time seat management, automated notifications, and an admin dashboard.
 
 🔗 **Live Demo**: [https://quickshow-one-pearl.vercel.app/](https://quickshow-one-pearl.vercel.app/)
+🔗 **Admin Dashboard**: [https://quickshow-one-pearl.vercel.app/admin](https://quickshow-one-pearl.vercel.app/admin)
+
+> **Note:** Admin access requires a Clerk account with admin privileges. Reach out for demo access, or see the "Admin Setup" section below to grant yourself admin rights locally.
 
 ## ✨ Features
 
