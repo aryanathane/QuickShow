@@ -5,7 +5,13 @@ A full-stack movie ticket booking platform that allows users to browse movies, s
 🔗 **Live Demo**: [https://quickshow-one-pearl.vercel.app/](https://quickshow-one-pearl.vercel.app/)
 🔗 **Admin Dashboard**: [https://quickshow-one-pearl.vercel.app/admin](https://quickshow-one-pearl.vercel.app/admin)
 
-> **Note:** Admin access requires a Clerk account with admin privileges. Reach out for demo access, or see the "Admin Setup" section below to grant yourself admin rights locally.
+**Demo Admin Login:**
+- Email: `kewab17731@chaineor.com`
+- Password: `Pass#123456`
+
+**Demo Admin Login (alternate):**
+- Email: `quikshow@example.com`
+- Password: `QuickShow@123`
 
 ## ✨ Features
 
@@ -35,7 +41,7 @@ A full-stack movie ticket booking platform that allows users to browse movies, s
 
 ### 1. Clone and Install
 
-```bash
+\`\`\`bash
 git clone https://github.com/aryanathane/QuickShow.git
 cd QuickShow
 
@@ -46,13 +52,13 @@ npm install
 # Install frontend dependencies
 cd ../client
 npm install
-```
+\`\`\`
 
 ### 2. Environment Setup
 
 Create `.env` file in **backend** directory:
 
-```env
+\`\`\`env
 MONGODB_URI=your_mongodb_uri
 CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 CLERK_SECRET_KEY=your_clerk_secret_key
@@ -65,16 +71,16 @@ STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
 SENDER_EMAIL=your_email@example.com
 SMTP_USER=your_smtp_username
 SMTP_PASS=your_smtp_password
-```
+\`\`\`
 
 Create `.env` file in **client** directory:
 
-```env
+\`\`\`env
 VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 VITE_BASE_URL=http://localhost:5000
 VITE_API_URL=http://localhost:5000/api
 VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-```
+\`\`\`
 
 ### 3. Get API Keys
 
@@ -91,23 +97,23 @@ VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 ### 4. Run the Application
 
 **Backend:**
-```bash
+\`\`\`bash
 cd backend
 npm run dev
-```
+\`\`\`
 
 **Frontend:**
-```bash
+\`\`\`bash
 cd client
 npm run dev
-```
+\`\`\`
 
 Backend: `http://localhost:5000`  
 Frontend: `http://localhost:5173`
 
 ## 📁 Project Structure
 
-```
+\`\`\`
 QuickShow/
 ├── backend/
 │   ├── config/          # Configuration files
@@ -123,7 +129,7 @@ QuickShow/
 │   │   ├── services/    # API calls
 │   │   └── context/     # State management
 └── README.md
-```
+\`\`\`
 
 ## 🔑 Key Features
 
@@ -146,19 +152,18 @@ QuickShow/
 
 The application is deployed on Vercel. For your own deployment:
 
-```bash
+\`\`\`bash
 # Build frontend
 cd client
 npm run build
 
 # Deploy using Vercel CLI
 vercel
-```
+\`\`\`
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
 
 ## 👤 Author
 
