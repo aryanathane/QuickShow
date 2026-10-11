@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎬 QuickShow – Movie Ticket Booking Application
 
 A full-stack movie ticket booking platform. Users browse movies, pick a show, choose seats and pay securely with Stripe. Bookings are confirmed by email, unpaid bookings are released automatically, and admins manage shows and track revenue from a dashboard.
@@ -220,3 +221,414 @@ Contributions are welcome. Please open an issue or submit a pull request.
 ---
 
 ⭐ If you find this project useful, please give it a star!
+=======
+# 🎬 QuickShow - Movie Booking Platform
+
+A modern, full-stack movie booking application similar to BookMyShow. Users can discover movies, book tickets, select seats, and make secure payments. Admins can manage shows, movies, and bookings.
+
+---
+
+## ✨ Features
+
+### **User Features**
+- 🎥 **Browse Movies** - Discover movies with details, ratings, trailers, and cast information
+- 📅 **Date & Time Selection** - Choose theatre, show timings, and dates
+- 💺 **Interactive Seat Selection** - Visual seat layout with real-time booking
+- 💳 **Secure Payment** - Stripe integration for safe ticket purchases
+- 🔔 **Booking Confirmation** - Email confirmations and reminder notifications
+- ❤️ **Favorites** - Save movies to watchlist for later
+- 📱 **My Bookings** - View booking history and ticket details
+- 🔐 **Secure Authentication** - Clerk-based authentication system
+
+### **Admin Features**
+- 📊 **Dashboard** - View analytics, revenue, and statistics
+- ➕ **Add Shows** - Create new movie shows with theatre and timing details
+- 📋 **Manage Shows** - Edit, delete, and update show information
+- 👁️ **View Bookings** - Monitor all user bookings and payment status
+- 🎯 **Seat Management** - Configure seat layouts and availability
+
+---
+
+## 🛠️ Tech Stack
+
+### **Frontend**
+- **React 19** - UI library
+- **Vite 7** - Lightning-fast build tool
+- **Tailwind CSS 4.1** - Utility-first CSS framework
+- **React Router v7** - Client-side routing
+- **Axios** - HTTP client for API calls
+- **Clerk** - Authentication service
+- **React Hot Toast** - Toast notifications
+- **React Player** - Video player for trailers
+- **Lucide React** - Icon library
+
+### **Backend**
+- **Node.js + Express 5.1** - Server framework
+- **MongoDB + Mongoose 8.19** - Database
+- **Stripe** - Payment processing
+- **Inngest** - Scheduled tasks & workflows
+- **Nodemailer** - Email service
+- **Cloudinary** - Image storage
+- **Clerk Express** - Authentication middleware
+
+### **DevOps & Deployment**
+- **Vercel** - Deployment platform (configured for both frontend & backend)
+- **ESLint** - Code quality & linting
+
+---
+
+## 📁 Project Structure
+
+```
+BookMyShow App/
+├── client/                     # React Frontend
+│   ├── src/
+│   │   ├── components/        # Reusable UI components
+│   │   ├── pages/             # Page components & routes
+│   │   ├── context/           # Global state management
+│   │   ├── lib/               # Utility functions
+│   │   └── assets/            # Static assets
+│   ├── vite.config.js
+│   └── package.json
+│
+└── server/                     # Node.js Backend
+    ├── models/                # MongoDB schemas
+    ├── controllers/           # Business logic
+    ├── routes/                # API endpoints
+    ├── middleware/            # Custom middleware
+    ├── configs/               # Configuration files
+    ├── inngest/               # Background jobs
+    └── server.js              # Main server file
+```
+
+---
+
+## 🚀 Getting Started
+
+### **Prerequisites**
+- Node.js 16+ and npm/yarn
+- MongoDB database
+- Stripe account
+- Clerk account
+- Cloudinary account
+- Nodemailer credentials
+
+### **Installation**
+
+#### **1. Clone the repository**
+```bash
+git clone https://github.com/aryanathane/QuickShow.git
+cd BookMyShow\ App
+```
+
+#### **2. Setup Backend**
+```bash
+cd server
+npm install
+```
+
+Create `.env` file in server folder:
+```env
+MONGODB_URI=your_mongodb_connection_string
+CLERK_SECRET_KEY=your_clerk_secret_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_webhook_secret
+CLOUDINARY_NAME=your_cloudinary_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASSWORD=your_email_password
+INNGEST_EVENT_KEY=your_inngest_key
+SVIX_WEBHOOK_SECRET=your_svix_secret
+PORT=3000
+```
+
+Start backend:
+```bash
+npm run server    # Development with nodemon
+npm start         # Production
+```
+
+#### **3. Setup Frontend**
+```bash
+cd client
+npm install
+```
+
+Create `.env` file in client folder:
+```env
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+VITE_API_URL=http://localhost:3000/api
+```
+
+Start frontend:
+```bash
+npm run dev       # Development
+npm run build     # Production build
+```
+
+---
+
+## 📡 API Endpoints
+
+### **Show Routes** (`/api/show`)
+```
+GET    /api/show              - Get all shows/movies
+GET    /api/show/:id          - Get show details
+POST   /api/show              - Create show (admin)
+PUT    /api/show/:id          - Update show (admin)
+DELETE /api/show/:id          - Delete show (admin)
+```
+
+### **Booking Routes** (`/api/booking`)
+```
+POST   /api/booking           - Create new booking
+GET    /api/booking/:id       - Get booking details
+GET    /api/booking/user/:id  - Get user's bookings
+PUT    /api/booking/:id       - Update booking
+DELETE /api/booking/:id       - Cancel booking
+```
+
+### **Admin Routes** (`/api/admin`)
+```
+GET    /api/admin/dashboard   - Dashboard statistics
+POST   /api/admin/show        - Add new show
+GET    /api/admin/shows       - List all shows
+GET    /api/admin/bookings    - List all bookings
+```
+
+### **User Routes** (`/api/user`)
+```
+GET    /api/user/profile      - Get user profile
+PUT    /api/user/profile      - Update profile
+GET    /api/user/bookings     - User bookings
+```
+
+### **Payment Routes** (`/api/stripe`)
+```
+POST   /api/stripe/webhook    - Stripe webhook handler
+```
+
+---
+
+## 📚 Database Schema
+
+### **Movie**
+```javascript
+{
+  _id: String,
+  title: String,
+  overview: String,
+  poster_path: String,
+  backdrop_path: String,
+  release_date: String,
+  genres: Array,
+  casts: Array,
+  vote_average: Number,
+  runtime: Number,
+  timestamps: true
+}
+```
+
+### **Show**
+```javascript
+{
+  movie: ObjectId (ref: Movie),
+  theatre: String,
+  showTime: String,
+  date: Date,
+  price: Number,
+  availableSeats: Array,
+  bookedSeats: Array,
+  totalSeats: Number,
+  timestamps: true
+}
+```
+
+### **Booking**
+```javascript
+{
+  user: String (Clerk ID),
+  show: String (Show ID),
+  amount: Number,
+  bookedSeats: [String],
+  isPaid: Boolean,
+  paymentLink: String,
+  reminderSent: Boolean,
+  timestamps: true
+}
+```
+
+### **User**
+```javascript
+{
+  clerkId: String,
+  email: String,
+  name: String,
+  avatar: String,
+  favorites: [String],
+  timestamps: true
+}
+```
+
+---
+
+## 🔄 User Flow
+
+### **Booking Flow**
+1. User browses movies on **Home** page
+2. Clicks movie to view **Movie Details** (trailer, cast, ratings)
+3. Selects date/time on **Date Select** component
+4. Chooses seats on **Seat Layout** page
+5. Proceeds to **Stripe Checkout** for payment
+6. System processes payment via **Stripe Webhook**
+7. **Inngest** sends confirmation email
+8. User sees booking in **My Bookings**
+
+### **Admin Flow**
+1. Admin logs in via Clerk authentication
+2. Views **Admin Dashboard** for statistics
+3. Can **Add Shows** for movies
+4. **Edit/Delete Shows** from list
+5. Monitors **All Bookings** with payment status
+
+---
+
+## 🔐 Authentication
+
+This project uses **Clerk** for secure authentication:
+- Sign up / Sign in functionality
+- Social login support
+- Session management
+- Protected routes for admin
+
+### **Protected Routes**
+- `/admin/*` - Admin routes (requires authentication)
+- `/my-bookings` - User bookings (requires authentication)
+
+---
+
+## 📧 Email & Notifications
+
+- **Toast Notifications**: Real-time feedback via React Hot Toast
+- **Booking Confirmations**: Nodemailer sends emails on successful booking
+- **Reminders**: Inngest scheduled jobs send reminder emails before show
+
+---
+
+## 💳 Payment Processing
+
+- **Stripe Integration**: Secure payment gateway
+- **Webhook Handling**: Automatic payment verification
+- **Order Tracking**: Real-time booking status updates
+
+---
+
+## 🚢 Deployment
+
+Both frontend and backend are configured for **Vercel** deployment:
+
+### **Frontend Deployment**
+```bash
+cd client
+npm run build
+vercel
+```
+
+### **Backend Deployment**
+```bash
+cd server
+vercel
+```
+
+Set environment variables in Vercel dashboard for both deployments.
+
+---
+
+## 📝 Environment Variables
+
+### **Server (.env)**
+- `MONGODB_URI` - MongoDB connection string
+- `CLERK_SECRET_KEY` - Clerk authentication secret
+- `STRIPE_SECRET_KEY` - Stripe secret key
+- `CLOUDINARY_*` - Cloudinary image upload credentials
+- `EMAIL_USER`, `EMAIL_PASSWORD` - SMTP credentials
+- `INNGEST_EVENT_KEY` - Inngest workflow key
+
+### **Client (.env)**
+- `VITE_CLERK_PUBLISHABLE_KEY` - Clerk public key
+- `VITE_API_URL` - Backend API URL
+
+---
+
+## 🐛 Troubleshooting
+
+### **MongoDB Connection Error**
+- Ensure MongoDB is running
+- Check connection string in `.env`
+- Verify IP whitelist in MongoDB Atlas
+
+### **Stripe Payment Fails**
+- Verify Stripe keys are correct
+- Check webhook endpoint is active
+- Ensure test/live mode matches credentials
+
+### **Email Not Sending**
+- Enable "Less secure app access" for Gmail
+- Check nodemailer credentials
+- Verify SMTP port (usually 587)
+
+### **Frontend Not Connecting to Backend**
+- Ensure backend server is running on port 3000
+- Check `VITE_API_URL` environment variable
+- Verify CORS is enabled in Express
+
+---
+
+## 📊 Performance Optimizations
+
+- **Vite** for fast development & optimized builds
+- **Tailwind CSS** for minimal CSS bundle
+- **Lazy Loading** of pages and components
+- **Image Optimization** via Cloudinary
+- **Caching** strategies for frequent API calls
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the ISC License - see the LICENSE file for details.
+
+---
+
+## 👨‍💻 Author
+
+**Aryan Athane** - [GitHub Profile](https://github.com/aryanathane)
+
+---
+
+## 📞 Support
+
+For issues, questions, or suggestions, please open an issue on GitHub or contact the author.
+
+---
+
+## 🔗 Links
+
+- **Live Demo**: [QuickShow](https://quickshow.vercel.app)
+- **GitHub Repository**: [aryanathane/QuickShow](https://github.com/aryanathane/QuickShow)
+
+---
+
+**Built with ❤️ for movie lovers**
+>>>>>>> a010dfd (updated README.md)
