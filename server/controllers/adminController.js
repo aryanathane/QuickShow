@@ -17,7 +17,8 @@ export const getDashBoardData = async(req,res)=>{
         const totalUser = await User.countDocuments();
 
         const dashboardData = {
-            totalBooking : bookings.length,
+            // Named totalBookings to match what Dashboard.jsx reads
+            totalBookings : bookings.length,
             totalRevenue : bookings.reduce((acc,booking)=> acc + booking.amount,0),
             activeShows,
             totalUser,
@@ -32,8 +33,31 @@ export const getDashBoardData = async(req,res)=>{
 //API to get all shows
 export const getAllShows = async (req, res)=>{
     try {
-        const shows = await  Show.find({showDateTime: {$gte: new Date()}}).populate('movie').sort({showDateTime:1})
-        res.json({success:true , shows})
+        const shows = await Show.find({showDateTime: {$gte: new Date()}}).populate('movie').sort({showDateTime:1}).lean()
+
+        // occupiedSeats also contains seats that are only HELD for unpaid bookings,
+        // so sales and earnings must come from PAID bookings only.
+        const showIds = shows.map(show => show._id.toString())
+        const paidStats = await Booking.aggregate([
+            { $match: { isPaid: true, show: { $in: showIds } } },
+            { $group: {
+                _id: '$show',
+                seatsSold: { $sum: { $size: '$bookedSeats' } },
+                earnings: { $sum: '$amount' },
+            } }
+        ])
+        const statsByShow = new Map(paidStats.map(stat => [stat._id, stat]))
+
+        const showsWithStats = shows.map(show => {
+            const stats = statsByShow.get(show._id.toString())
+            return {
+                ...show,
+                seatsSold: stats?.seatsSold ?? 0,
+                earnings: stats?.earnings ?? 0,
+            }
+        })
+
+        res.json({success:true , shows: showsWithStats})
     } catch (error) {
         console.error(error);
         res.json({success:false , message:error.message})

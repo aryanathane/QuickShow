@@ -6,12 +6,17 @@ const Loading = () => {
     const navigate = useNavigate()
 
     useEffect(()=>{
-      if(nextUrl){
-        setTimeout(()=>{
-          navigate('/'+ nextUrl)
-        },5000)
-      }
-    },[])
+      if(!nextUrl) return
+
+      // Redirect after payment. The bookings page keeps re-checking until the
+      // webhook has marked the booking as paid, so this can stay short.
+      const timer = setTimeout(()=>{
+        navigate('/'+ nextUrl)
+      },3000)
+
+      // Clear the timer if the user leaves first
+      return ()=> clearTimeout(timer)
+    },[nextUrl])
 
   return (
     <div className='flex justify-center items-center h-[80vh]'>

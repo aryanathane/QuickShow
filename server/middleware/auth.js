@@ -33,3 +33,12 @@ export const protectAdmin = async(req, res, next) => {
         return res.json({success: false, message: `Authorization failed: ${error.message}`});
     }
 }
+
+// Blocks anonymous requests: every route behind this knows req.auth().userId is set
+export const requireUser = (req, res, next) => {
+    const userId = typeof req.auth === 'function' ? req.auth()?.userId : null;
+    if (!userId) {
+        return res.status(401).json({ success: false, message: 'Please sign in to continue' });
+    }
+    next();
+};
