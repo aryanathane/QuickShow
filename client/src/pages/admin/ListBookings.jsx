@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAppContext } from '../../context/AppContext'
 import Loading from '../../components/Loading'
+import toast from 'react-hot-toast'
 
 const ListBookings = () => {
   const { axios, getToken } = useAppContext()
@@ -9,16 +10,17 @@ const ListBookings = () => {
 
   const getAllBookings = async () => {
     try {
-      const { data } = await axios.get('/api/admin/bookings', {
+      const { data } = await axios.get('/api/admin/all-bookings', {
         headers: { Authorization: `Bearer ${await getToken()}` }
       })
       
       if (data.success) {
         setBookings(data.bookings)
-        console.log('Admin bookings data:', data.bookings)
+      } else {
+        toast.error(data.message)
       }
     } catch (error) {
-      console.log('Error fetching admin bookings:', error)
+      toast.error(error.message)
     }
     setIsLoading(false)
   }
@@ -48,7 +50,12 @@ const ListBookings = () => {
                 {/* User Info */}
                 <div>
                   <h3 className='font-semibold text-gray-800'>User Details</h3>
-                  <p className='text-sm text-gray-600'>ID: {booking.user}</p>
+                  <p className='text-sm text-gray-600'>
+                    Name: {booking.user?.name || 'Unknown user'}
+                  </p>
+                  <p className='text-sm text-gray-600'>
+                    Email: {booking.user?.email || 'N/A'}
+                  </p>
                   <p className='text-sm text-gray-600'>
                     Booking ID: {booking._id ? booking._id.slice(-6) : 'N/A'}
                   </p>

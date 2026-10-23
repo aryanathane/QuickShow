@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { dummyShowsData } from '../../assets/assets';
 import Loading from '../../components/Loading';
 import { CheckIcon, DeleteIcon, StarIcon } from 'lucide-react';
 import Title from '../../components/admin/Title';
 import { kConverter } from '../../lib/kConverter';
-import { data } from 'react-router-dom';
-import axios from 'axios';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 
@@ -20,18 +17,24 @@ const AddShows = () => {
   const [showPrice, setShowPrice] = useState("")
 
   const [addingShow , setAddingShow ] = useState(false)
+  const [moviesLoading, setMoviesLoading] = useState(true)
 
   const fetchNowPlayingMovies = async () => {
+    setMoviesLoading(true)
     try {
       const {data} = await axios.get('/api/show/now-playing',{
-        headers : {Authorization: `Bearer ${await getToken()} `}
+        headers : {Authorization: `Bearer ${await getToken()}`}
       })
       if(data.success){
         setNowPlayingMovies(data.movies)
+      }else{
+        toast.error(data.message)
       }
     } catch (error) {
-      console.error('Error fetching movies',error)
+      console.error('Error fetching movies:', error)
+      toast.error(error.response?.data?.message || error.message)
     }
+    setMoviesLoading(false)
   }
 
   const handleDataTimeAdd= ()=>{
@@ -63,12 +66,16 @@ const AddShows = () => {
   };
 
   const handleSubmit = async ()=>{
-    try {
-      setAddingShow(true)
-      if(!selectedMovie || Object.keys(dateTimeSelection).length===0 || !showPrice){
-        return toast('Missing required fields')
-      }
+    // Validate BEFORE disabling the button, so a failed check can never leave it stuck
+    if(!selectedMovie || Object.keys(dateTimeSelection).length===0){
+      return toast('Select a movie and at least one date and time')
+    }
+    if(!(Number(showPrice) > 0)){
+      return toast('Enter a valid show price')
+    }
 
+    setAddingShow(true)
+    try {
       const showsInput = Object.entries(dateTimeSelection).map(([date,time])=>({date,time}))
 
       const payload = {
@@ -77,7 +84,7 @@ const AddShows = () => {
         showPrice : Number(showPrice)
       }
 
-      const {data} = await axios.post('/api/show/add',payload, {headers : {Authorization: `Bearer ${await getToken()} `}})
+      const {data} = await axios.post('/api/show/add',payload, {headers : {Authorization: `Bearer ${await getToken()}`}})
 
       if(data.success){
         toast.success(data.message)
@@ -90,9 +97,10 @@ const AddShows = () => {
       }
     } catch (error) {
       console.error("Sumission error:", error)
-      toast.error('An error occured please try again')
+      toast.error(error.response?.data?.message || 'An error occured please try again')
+    } finally {
+      setAddingShow(false)
     }
-    setAddingShow(false)
   }
   
   useEffect(() => {
@@ -103,7 +111,18 @@ const AddShows = () => {
 
 
 
-  return nowPlayingMovies.length > 0 ? (
+  if (moviesLoading) return <Loading />
+
+  if (nowPlayingMovies.length === 0) {
+    return (
+      <div className='mt-10 text-gray-400'>
+        <p>Could not load now-playing movies.</p>
+        <button onClick={fetchNowPlayingMovies} className='mt-4 bg-primary text-white px-6 py-2 rounded hover:bg-primary/90 transition-all cursor-pointer'>Try again</button>
+      </div>
+    )
+  }
+
+  return (
     <>
       <Title text1="Add" text2="Shows"></Title>
       <p className='mt-10 text-lg font-medium'>Now Playing Movies</p>
@@ -177,7 +196,7 @@ const AddShows = () => {
       )}
       <button onClick={handleSubmit} disabled={addingShow} className='bg-primary text-white px-8 py-2 mt-6 rounded hover:bg-primary/90 transition-all cursor-pointer' >Add show</button>
     </>
-  ) : <Loading />
+  )
 }
 
 export default AddShows

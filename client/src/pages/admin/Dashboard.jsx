@@ -1,6 +1,5 @@
 import { ChartLineIcon, CircleDollarSignIcon, PlayCircleIcon, StarIcon, UserIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
-import { dummyDashboardData } from '../../assets/assets';
 import Loading from '../../components/Loading';
 import Title from '../../components/admin/Title';
 import BlurCircle from '../../components/BlurCircle';
@@ -29,18 +28,18 @@ const Dashboard = () => {
 
   const fetchDashboardData = async ()=>{
     try {
-      const {data} = await axios.get("/api/admin/dashboard",{headers : {Authorization: `Bearer ${await getToken()} `}})
-      
+      const {data} = await axios.get("/api/admin/dashboard",{headers : {Authorization: `Bearer ${await getToken()}`}})
+
       if(data.success){
         setDashboardData(data.dashboardData)
-        setLoading(false)
       }else{
-      toast.error(data.message)
+        toast.error(data.message)
       }
-    
     } catch (error) {
-      toast.error("Error fetching dashboard data:",error)
+      toast.error(error.response?.data?.message || error.message)
     }
+    // Always stop the spinner, even when the request fails
+    setLoading(false)
   }
 
   useEffect(()=>{

@@ -7,6 +7,8 @@ const bookingSchema = new mongoose.Schema({
     bookedSeats : {type: [String] , required:true },
     isPaid : {type: Boolean , default:false },
     paymentLink : {type: String },
+    // Needed so the cleanup job can expire the Stripe Checkout session
+    stripeSessionId : {type: String },
     reminderSent : {type: Boolean , default:false }
 },{timestamps:true})
 

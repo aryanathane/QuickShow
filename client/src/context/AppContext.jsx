@@ -24,8 +24,8 @@ export const AppProvider = ({children})=>{
 
     const fetchIsAdmin =async ()=>{
         try {
-            const{data} = await axios.get('/api/admin/is-admin',{headers : {Authorization: `Bearer ${await getToken()} `}})
-            setIsAdmin(data.isAdmin)
+            const{data} = await axios.get('/api/admin/is-admin',{headers : {Authorization: `Bearer ${await getToken()}`}})
+            setIsAdmin(Boolean(data.isAdmin))
 
             if(!data.isAdmin && location.pathname.startsWith('/admin')){
                 navigate('/')
@@ -33,6 +33,12 @@ export const AppProvider = ({children})=>{
             }
         } catch (error) {
             console.error(error)
+            setIsAdmin(false)
+            // Without this, the admin layout kept its spinner forever when the check failed
+            if(location.pathname.startsWith('/admin')){
+                navigate('/')
+                toast.error('Could not verify admin access')
+            }
         }
     }
 
@@ -52,7 +58,7 @@ export const AppProvider = ({children})=>{
 
     const fetchFavoriteMovies = async()=>{
         try {
-            const {data} = await axios.get('/api/user/favorites',{headers : {Authorization: `Bearer ${await getToken()} `}})
+            const {data} = await axios.get('/api/user/favorites',{headers : {Authorization: `Bearer ${await getToken()}`}})
             if(data.success){
                 setFavoriteMovies(data.movies)
             }else{
@@ -72,6 +78,10 @@ export const AppProvider = ({children})=>{
         if(user){
             fetchIsAdmin()
             fetchFavoriteMovies()
+        }else{
+            // Signed out: forget the previous user's admin flag and favorites
+            setIsAdmin(false)
+            setFavoriteMovies([])
         }
     },[user])
 

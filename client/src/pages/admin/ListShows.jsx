@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { dummyShowsData } from '../../assets/assets';
 import Loading from '../../components/Loading';
 import Title from '../../components/admin/Title';
 import { dateFormat } from '../../lib/dateFormat';
 import { useAppContext } from '../../context/AppContext';
+import toast from 'react-hot-toast';
 
 const ListShows = () => {
 
   const currency = import.meta.env.VITE_CURRENCY
 
-  const {axios, getToken , user , image_base_url } = useAppContext()
+  const {axios, getToken , user } = useAppContext()
 
   const [shows   , setShows ] = useState([]);
   const [loading , setLoading ] = useState(true);
@@ -19,11 +19,17 @@ const ListShows = () => {
       const {data} = await axios.get("/api/admin/all-shows",{
         headers : {Authorization: `Bearer ${await getToken()}`}
       });
-      setShows(data.shows)
-      setLoading(false)
+      if(data.success){
+        setShows(data.shows)
+      }else{
+        toast.error(data.message)
+      }
     }catch(error){
       console.error(error);
+      toast.error(error.response?.data?.message || error.message)
     }
+    // Always stop the spinner, even when the request fails
+    setLoading(false)
   }
 
   useEffect(()=>{
@@ -43,17 +49,21 @@ const ListShows = () => {
             <tr className='bg-primary/20 text-left text-white pl-2'>
               <th className='font-medium p-2 pl-5' >Movie Name</th>
               <th className='font-medium p-2'>Show Time</th>
-              <th>Total Booking</th>
-              <th>Earning</th>
+              <th className='font-medium p-2'>Seats Sold</th>
+              <th className='font-medium p-2'>Earning</th>
             </tr>
           </thead>
           <tbody className='text-sm font-light'>
-            {shows.map((show,index)=>(
-              <tr key={index} className='border border-primary/10 bg-primary/5 even:bg-primary/10'>
-                <td className='p-2 min-w-45 pl-5'>{show.movie.title}</td>
+            {shows.length === 0 && (
+              <tr><td colSpan={4} className='p-4 text-center text-gray-400'>No upcoming shows</td></tr>
+            )}
+            {shows.map((show)=>(
+              <tr key={show._id} className='border border-primary/10 bg-primary/5 even:bg-primary/10'>
+                <td className='p-2 min-w-45 pl-5'>{show.movie?.title ?? 'Unknown movie'}</td>
                 <td className='p-2'>{dateFormat(show.showDateTime)}</td>
-                <td className='p-2'>{Object.keys(show.occupiedSeats).length}</td>
-                <td className='p-2'>{currency} {Object.keys(show.occupiedSeats).length * show.showPrice} </td>
+                {/* Paid bookings only: seats merely held for unpaid bookings are not sales */}
+                <td className='p-2'>{show.seatsSold}</td>
+                <td className='p-2'>{currency} {show.earnings} </td>
               </tr>
             ))}
           </tbody>
