@@ -10,9 +10,6 @@ A full-stack movie ticket booking platform. Users browse movies, pick a show, ch
 - Email: `kewab17731@chaineor.com`
 - Password: `Pass#123456`
 
-**Demo Admin Login (alternate):**
-- Email: `quikshow@example.com`
-- Password: `QuickShow@123`
 
 *(To make your own admin account when running locally, see [Creating an admin](#creating-an-admin).)*
 
